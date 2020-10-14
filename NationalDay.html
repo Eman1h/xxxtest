@@ -1,0 +1,102 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  background-color: #8fc0a9;
+  color: #40514E
+  margin: 0;
+  text-align: center;
+  font-family: 'Merriweather', serif;
+}
+div:hover {
+
+    background-color: white;
+   }
+
+p {
+  text-align: center;
+  font-size: 60px;
+  margin-top: 0px;
+}
+.nationalday{
+  font-size: 20px;;
+}
+</style>
+</head>
+<body>
+  <canvas id='myCanvas' width='800' height='800'></canvas>
+  <div class="">
+    <img src="images/flag.jpg"alt="saudi-flag" width="1000" height="300">
+  </div>
+  <p><strong>When is Saudi Arabia National Day? </strong></p>
+
+<p class="nationalday">Saudi Arabian National day is always celebrated on September 23rd.
+Known locally as Al-Yaom-ul-Watany, it marks September 23rd 1932,
+when King Abdulaziz announced the unification of the country as a kingdom.</p>
+
+<p id="demo"></p>
+
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Sep 23, 2020 15:37:25").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+
+  // If the count down is over, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+const max_fireworks = 5,  max_sparks = 50;
+let canvas = document.getElementById('myCanvas');
+let context = canvas.getContext('2d');
+let fireworks = [];
+for (let i = 0; i < max_fireworks; i++)
+{	  let firework = {	    sparks: []	  };
+	  for (let n = 0; n < max_sparks; n++) {
+      let spark = {	      vx: Math.random() * 5 + .5,	      vy: Math.random() * 5 + .5,	      weight: Math.random() * .3 + .03,	      red: Math.floor(Math.random() * 2),	      green: Math.floor(Math.random() * 2),	      blue: Math.floor(Math.random() * 2)	    };	    if (Math.random() > .5) spark.vx = -spark.vx;	    if (Math.random() > .5) spark.vy = -spark.vy;	    firework.sparks.push(spark);	  }	  fireworks.push(firework);	  resetFirework(firework);	}	window.requestAnimationFrame(explode);	 	function resetFirework(firework) {	  firework.x = Math.floor(Math.random() * canvas.width);	  firework.y = canvas.height;	  firework.age = 0;	  firework.phase = 'fly';	}	 	function explode() {	  context.clearRect(0, 0, canvas.width, canvas.height);	  fireworks.forEach((firework,index) => {	    if (firework.phase == 'explode') {	        firework.sparks.forEach((spark) => {	        for (let i = 0; i < 10; i++) {	          let trailAge = firework.age + i;
+       let x = firework.x + spark.vx * trailAge;
+       let y = firework.y + spark.vy * trailAge + spark.weight * trailAge * spark.weight * trailAge;	                    let fade = i * 20 - firework.age * 2;
+      let r = Math.floor(spark.red * fade);
+      let g = Math.floor(spark.green * fade);
+      let b = Math.floor(spark.blue * fade);
+                                             context.beginPath();
+         context.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',1)';
+         context.rect(x, y, 4, 4);
+                   context.fill();	        }	      });
+     firework.age++;
+                                                                                       	      if (firework.age > 100 && Math.random() < .05) {
+                                                                                                       resetFirework(firework);
+                                                                                                         }	    }
+                                                                                                         else {	      firework.y = firework.y - 10;
+                                                                                                           	      for (let spark = 0; spark < 15; spark++) {	        context.beginPath();	        context.fillStyle = 'rgba(' + index * 50 + ',' + spark * 17 + ',0,1)';	        context.rect(firework.x + Math.random() * spark - spark / 2, firework.y + spark * 4, 4, 4);	        context.fill();	      }	      if (Math.random() < .001 || firework.y < 200) firework.phase = 'explode';	    }	  });	  window.requestAnimationFrame(explode);	}
+</script>
+
+</body>
+</html>
+
+
+
+  </body>
+</html>
